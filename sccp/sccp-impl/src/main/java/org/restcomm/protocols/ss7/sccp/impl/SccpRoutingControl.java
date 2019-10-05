@@ -648,7 +648,7 @@ public class SccpRoutingControl implements SccpRoutingCtxInterface {
                     return;
                 }
 
-                if (ssn > 1) { // was: ssn > 1 ???
+                if (ssn > 0) { // was: ssn > 1 ???
                     if (calledPartyAddress.getAddressIndicator().getRoutingIndicator() == RoutingIndicator.ROUTING_BASED_ON_DPC_AND_SSN) {
                         // if a non-zero SSN is present but not the GT (case 2a) of 2.2.2),
                         // then the called party address provided shall

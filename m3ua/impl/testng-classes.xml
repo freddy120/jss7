@@ -13,13 +13,13 @@
       		<package name="org.restcomm.protocols.ss7.sccp.impl.translation" />
   		 </packages>
   		 -->	
-		<classes>
+		<!--<classes>
 			<class name="org.restcomm.protocols.ss7.m3ua.impl.GatewayTest"></class>
 			<class name="org.restcomm.protocols.ss7.m3ua.impl.RemSgFSMTest"></class>
 			<class name="org.restcomm.protocols.ss7.m3ua.impl.SgFSMTest"></class>
 			<class name="org.restcomm.protocols.ss7.m3ua.impl.M3UAManagementTest"></class>
 			<class name="org.restcomm.protocols.ss7.m3ua.impl.fsm.FSMTest"></class>
-		</classes>
+		</classes>-->
 	</test>
 
 
