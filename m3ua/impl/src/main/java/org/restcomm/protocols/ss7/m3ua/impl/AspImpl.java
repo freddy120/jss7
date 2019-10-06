@@ -243,6 +243,7 @@ public class AspImpl implements XMLSerializable, Asp {
         this.peerFSM.createState(AspState.ACTIVE.toString()).setOnEnter(new AspStateEnterActive(this));
         this.peerFSM.createState(AspState.INACTIVE.toString()).setOnEnter(new AspStateEnterInactive(this));
 
+
         this.peerFSM.setStart(AspState.DOWN.toString());
         this.peerFSM.setEnd(AspState.DOWN.toString());
 
@@ -285,9 +286,9 @@ public class AspImpl implements XMLSerializable, Asp {
         // it?
         this.peerFSM.createTransition(TransitionState.PAYLOAD, AspState.INACTIVE.toString(), AspState.INACTIVE.toString());
 
-        // ******************************************************************/
-        // STATE ACTIVE /
-        // ******************************************************************/
+//         ******************************************************************/
+//         STATE ACTIVE /
+//         ******************************************************************/
         this.peerFSM.createTransition(TransitionState.COMM_DOWN, AspState.ACTIVE.toString(), AspState.DOWN.toString());
 
         this.peerFSM.createTransition(TransitionState.ASP_UP, AspState.ACTIVE.toString(), AspState.INACTIVE.toString());
@@ -303,6 +304,7 @@ public class AspImpl implements XMLSerializable, Asp {
         // This transition will be signaled from SGW
         this.peerFSM.createTransition(TransitionState.OTHER_ALTERNATE_ASP_ACTIVE, AspState.ACTIVE.toString(),
                 AspState.INACTIVE.toString());
+
     }
 
     public String getName() {

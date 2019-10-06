@@ -25,6 +25,7 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.apache.log4j.Logger;
 import org.restcomm.protocols.ss7.m3ua.As;
 import org.restcomm.protocols.ss7.m3ua.ExchangeType;
 import org.restcomm.protocols.ss7.m3ua.Functionality;
@@ -40,6 +41,7 @@ import org.restcomm.protocols.ss7.m3ua.parameter.TrafficModeType;
  */
 public class RouteAsImpl implements XMLSerializable, RouteAs {
 
+    private static final Logger logger = Logger.getLogger(RouteAsImpl.class);
     private static final String TRAFFIC_MODE_TYPE = "trafficModeType";
     private static final String AS_ARRAY = "as";
 
@@ -117,6 +119,7 @@ public class RouteAsImpl implements XMLSerializable, RouteAs {
 
     protected AsImpl getAsForRoute(int count) {
 
+        logger.info("RouteAsImpl getAsForRoute count " + count );
         if (this.trafficModeType.getMode() == TrafficModeType.Override) {
             // For Override we always try with first available AS
             count = 0;
@@ -124,6 +127,9 @@ public class RouteAsImpl implements XMLSerializable, RouteAs {
 
         // First attempt
         AsImpl asImpl = (AsImpl) asArray[count];
+
+        logger.info("RouteAsImpl getAsForRoute isAsActive:  " + this.isAsActive(asImpl) );
+        logger.info("RouteAsImpl getAsForRoute isUP:  " + asImpl.isUp());
         if (this.isAsActive(asImpl)) {
             return asImpl;
         }
@@ -137,9 +143,12 @@ public class RouteAsImpl implements XMLSerializable, RouteAs {
                 count = 0;
             }
             asImpl = (AsImpl) asArray[count];
+            logger.info("RouteAsImpl getAsForRoute isAsActive:  " + this.isAsActive(asImpl) );
+            logger.info("RouteAsImpl getAsForRoute isUP:  " + asImpl.isUp());
             if (this.isAsActive(asImpl)) {
                 return asImpl;
             }
+
 
         }
         return null;
@@ -153,7 +162,8 @@ public class RouteAsImpl implements XMLSerializable, RouteAs {
                     || (asImpl.getFunctionality() == Functionality.IPSP && asImpl.getExchangeType() == ExchangeType.DE)
                     || (asImpl.getFunctionality() == Functionality.IPSP && asImpl.getExchangeType() == ExchangeType.SE && asImpl
                             .getIpspType() == IPSPType.CLIENT)) {
-                fsm = asImpl.getPeerFSM();
+                //fsm = asImpl.getPeerFSM();
+                fsm = asImpl.getLocalFSM();
             } else {
                 fsm = asImpl.getLocalFSM();
             }

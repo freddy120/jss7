@@ -618,7 +618,8 @@ public class AsImpl implements XMLSerializable, As {
                 || (this.functionality == Functionality.SGW && this.exchangeType == ExchangeType.DE)
                 || (this.functionality == Functionality.IPSP && this.ipspType == IPSPType.CLIENT)
                 || (this.functionality == Functionality.IPSP && this.ipspType == IPSPType.SERVER && this.exchangeType == ExchangeType.DE)) {
-            fsm = this.peerFSM;
+            //fsm = this.peerFSM;
+            fsm = this.localFSM;
         } else {
             fsm = this.localFSM;
             isASPLocalFsm = false;

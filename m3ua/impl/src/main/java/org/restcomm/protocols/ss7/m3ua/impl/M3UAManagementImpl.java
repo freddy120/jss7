@@ -1176,7 +1176,7 @@ public class M3UAManagementImpl extends Mtp3UserPartBaseImpl implements M3UAMana
         PayloadData payload = (PayloadData) messageFactory.createMessage(MessageClass.TRANSFER_MESSAGES, MessageType.PAYLOAD);
         payload.setData(data);
 
-        logger.error("data, dpc: " + data.getDpc() + " opc: " + data.getOpc() + " si: " + data.getSI()
+        logger.info("data, dpc: " + data.getDpc() + " opc: " + data.getOpc() + " si: " + data.getSI()
             + " ni: " + data.getNI() + " sls:" + data.getSLS());
 
 

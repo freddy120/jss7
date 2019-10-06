@@ -22,6 +22,7 @@
 package org.restcomm.protocols.ss7.m3ua.impl;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import javolution.util.FastList;
 import javolution.util.FastSet;
@@ -191,7 +192,7 @@ public class M3UARouteManagement {
     protected void addRoute(int dpc, int opc, int si, String asName, int traffmode) throws Exception {
         AsImpl asImpl = null;
         for (FastList.Node<As> n = this.m3uaManagement.appServers.head(), end = this.m3uaManagement.appServers.tail(); (n = n
-                .getNext()) != end;) {
+            .getNext()) != end;) {
             if (n.getValue().getName().compareTo(asName) == 0) {
                 asImpl = (AsImpl) n.getValue();
                 break;
@@ -203,7 +204,7 @@ public class M3UARouteManagement {
         }
 
         String key = (new StringBuffer().append(dpc).append(KEY_SEPARATOR).append(opc).append(KEY_SEPARATOR).append(si))
-                .toString();
+            .toString();
 
         RouteAsImpl asArray = route.get(key);
 
@@ -233,7 +234,7 @@ public class M3UARouteManagement {
     protected void removeRoute(int dpc, int opc, int si, String asName) throws Exception {
         AsImpl asImpl = null;
         for (FastList.Node<As> n = this.m3uaManagement.appServers.head(), end = this.m3uaManagement.appServers.tail(); (n = n
-                .getNext()) != end;) {
+            .getNext()) != end;) {
             if (n.getValue().getName().compareTo(asName) == 0) {
                 asImpl = (AsImpl) n.getValue();
                 break;
@@ -245,7 +246,7 @@ public class M3UARouteManagement {
         }
 
         String key = (new StringBuffer().append(dpc).append(KEY_SEPARATOR).append(opc).append(KEY_SEPARATOR).append(si))
-                .toString();
+            .toString();
 
         RouteAsImpl asArray = route.get(key);
 
@@ -283,32 +284,54 @@ public class M3UARouteManagement {
     protected AsImpl getAsForRoute(int dpc, int opc, int si, int sls) {
         // TODO : Loadsharing needs to be implemented
 
+        logger.info("getAsForRoute "+ route.toString());
+        for(Map.Entry<String,RouteAsImpl> entry : route.entrySet()){
+            logger.error(entry.getKey() + " value: " + Arrays.toString(entry.getValue().getAsArray()));
+        }
         String key = (new StringBuffer().append(dpc).append(KEY_SEPARATOR).append(opc).append(KEY_SEPARATOR).append(si))
-                .toString();
+            .toString();
+        logger.info("getAsForRoute, searching for key " + key);
         RouteAsImpl routeAs = route.get(key);
+        logger.info("getAsForRoute, found " + routeAs);
 
         if (routeAs == null) {
             key = (new StringBuffer().append(dpc).append(KEY_SEPARATOR).append(opc).append(KEY_SEPARATOR).append(WILDCARD))
-                    .toString();
-
+                .toString();
+            logger.info("getAsForRoute, searching for key " + key);
             routeAs = route.get(key);
+            logger.info("getAsForRoute, found " + routeAs);
 
             if (routeAs == null) {
                 key = (new StringBuffer().append(dpc).append(KEY_SEPARATOR).append(WILDCARD).append(KEY_SEPARATOR)
-                        .append(WILDCARD)).toString();
-
+                    .append(WILDCARD)).toString();
+                logger.info("getAsForRoute, searching for key " + key);
                 routeAs = route.get(key);
+                logger.info("getAsForRoute, found " + routeAs);
             }
         }
 
+        logger.info("getAsForRoute, found " + routeAs);
         if (routeAs == null) {
             return null;
         }
 
+        logger.error("getAsForRoute, found " + routeAs);
+
         int count = (sls & this.asSelectionMask);
         count = (count >> this.asSlsShiftPlaces);
+        logger.info("getAsForRoute, count-sls " + count);
+        logger.info("getAsArray " + routeAs.getAsArray());
+        logger.info("getAsArray size: " + routeAs.getAsArray().length);
+        for(As as : routeAs.getAsArray()){
+            if(as!=null){
+                AsImpl asImpl = (AsImpl) as;
+                logger.info("as is up: " + as.isUp() + " " + as.getName());
+                logger.info("asImpl is up: " +asImpl.isUp() + " " + asImpl.getName());
+            }
 
-       return routeAs.getAsForRoute(count);
+        }
+        logger.info("getAsForRoute, routeAs.getAsForRoute " + routeAs.getAsForRoute(count));
+        return routeAs.getAsForRoute(count);
     }
 
     private void addAsToDPC(int dpc, AsImpl asImpl) {
